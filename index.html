@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raj Shinde — IT Support Engineer</title>
-<meta name="description" content="Raj Shinde — IT Support Engineer, Application & Technical Support, Dublin, Ireland.">
+<title>Raj Shinde | IT Automation & Data Reporting</title>
+<meta name="description" content="Raj Shinde: IT professional building Excel VBA, Power Automate, and Power BI automation for financial reporting, based in Dublin, Ireland.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,10 +14,12 @@
     --surface: #111827;
     --surface-alt: #161F32;
     --border: #232D42;
-    --signal: #4FD1C5;
-    --signal-dim: rgba(79,209,197,0.14);
-    --amber: #F0B429;
-    --amber-dim: rgba(240,180,41,0.14);
+    --signal: #F0B429;
+    --signal-dim: rgba(240,180,41,0.14);
+    --amber: #4FD1C5;
+    --amber-dim: rgba(79,209,197,0.14);
+    --gain: #3FBF7F;
+    --gain-dim: rgba(63,191,127,0.14);
     --text: #EDF1F7;
     --text-muted: #8A93A6;
     --text-faint: #57607A;
@@ -135,16 +137,21 @@
     display:grid; grid-template-columns:repeat(4,1fr);
     border:1px solid var(--border); border-radius:var(--radius);
     overflow:hidden; background:var(--surface);
+    background-image:linear-gradient(var(--border) 1px, transparent 1px);
+    background-size:100% 24px;
   }
   .stat{
     padding:20px 16px; border-right:1px solid var(--border);
+    border-top:2px solid var(--signal);
+    position:relative;
   }
   .stat:last-child{ border-right:none; }
   .stat-num{
     font-family:var(--mono); font-weight:700;
     font-size:clamp(20px,3vw,26px); color:var(--signal);
-    display:block; margin-bottom:6px;
+    display:flex; align-items:baseline; gap:6px; margin-bottom:6px;
   }
+  .stat-num .trend{ font-size:12px; color:var(--gain); }
   .stat-label{
     font-family:var(--mono); font-size:10.5px; letter-spacing:0.08em;
     text-transform:uppercase; color:var(--text-faint);
@@ -161,7 +168,8 @@
     display:flex; align-items:baseline; gap:14px; margin-bottom:36px;
   }
   .section-tag{
-    font-family:var(--mono); font-size:12px; color:var(--text-faint);
+    font-family:var(--mono); font-size:12px; color:var(--signal);
+    letter-spacing:0.06em;
   }
   .section-head h2{
     font-family:var(--mono); font-weight:600; font-size:22px;
@@ -171,30 +179,29 @@
     color:var(--text-muted); max-width:600px; margin-bottom:36px; margin-top:-20px;
   }
 
-  /* ---------- EXPERIENCE / TICKET LOG ---------- */
+  /* ---------- EXPERIENCE / REPORT ROWS ---------- */
   .ticket{
-    border:1px solid var(--border); border-radius:var(--radius);
+    border:1px solid var(--border); border-left:3px solid var(--border); border-radius:var(--radius);
     background:var(--surface); margin-bottom:18px; overflow:hidden;
   }
+  .ticket.current{ border-left-color:var(--signal); }
   .ticket:last-child{ margin-bottom:0; }
   .ticket-head{
-    display:flex; flex-wrap:wrap; align-items:center; gap:12px;
-    padding:16px 20px; border-bottom:1px solid var(--border);
+    display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:12px;
+    padding:18px 20px; border-bottom:1px solid var(--border);
     background:var(--surface-alt);
   }
-  .ticket-id{
-    font-family:var(--mono); font-size:12px; color:var(--text-faint);
+  .role-org{
+    display:block; font-family:var(--mono); font-size:12px; color:var(--text-faint);
+    margin-top:4px;
   }
-  .badge{
-    font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em;
-    text-transform:uppercase; padding:3px 9px; border-radius:20px;
+  .period-pill{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.04em;
+    color:var(--text-muted); border:1px solid var(--border);
+    padding:4px 10px; border-radius:20px; white-space:nowrap;
   }
-  .badge.active{ color:var(--signal); background:var(--signal-dim); border:1px solid rgba(79,209,197,0.35); }
-  .badge.closed{ color:var(--amber); background:var(--amber-dim); border:1px solid rgba(240,180,41,0.35); }
-  .ticket-title{ font-weight:600; font-size:17px; margin-right:auto; }
-  .ticket-meta{
-    font-family:var(--mono); font-size:12px; color:var(--text-faint);
-  }
+  .period-pill.current{ color:var(--signal); background:var(--signal-dim); border-color:rgba(240,180,41,0.35); }
+  .ticket-title{ font-weight:600; font-size:17px; }
   .ticket-body{ padding:18px 20px 22px; }
   .ticket-body ul{ list-style:none; }
   .ticket-body li{
@@ -203,7 +210,7 @@
   }
   .ticket-body li:last-child{ margin-bottom:0; }
   .ticket-body li::before{
-    content:'›'; position:absolute; left:0; color:var(--signal);
+    content:'▸'; position:absolute; left:0; color:var(--signal);
     font-family:var(--mono);
   }
 
@@ -211,11 +218,13 @@
   .project-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
   @media (max-width:820px){ .project-grid{ grid-template-columns:1fr; } }
   .project{
-    border:1px solid var(--border); border-radius:var(--radius);
+    border:1px solid var(--border); border-top:3px solid var(--border-accent, var(--signal)); border-radius:var(--radius);
     background:var(--surface); padding:22px; display:flex; flex-direction:column;
     transition:border-color 0.15s ease;
   }
-  .project:hover{ border-color:rgba(79,209,197,0.4); }
+  .project:hover{ border-color:var(--border-accent, var(--signal)); }
+  .project.cat-data{ --border-accent: var(--amber); }
+  .project.cat-mobile{ --border-accent: var(--text-faint); }
   .project-status{
     display:flex; align-items:center; gap:7px; margin-bottom:14px;
     font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em;
@@ -267,30 +276,38 @@
     .edu-item{ flex-direction:column; gap:4px; }
   }
 
-  /* ---------- CONTACT ---------- */
-  .terminal{
+  /* ---------- CONTACT / STATEMENT PANEL ---------- */
+  .report-panel{
     border:1px solid var(--border); border-radius:var(--radius);
     background:var(--surface); overflow:hidden;
   }
-  .terminal-bar{
-    display:flex; gap:6px; padding:12px 16px;
+  .report-panel-bar{
+    display:flex; align-items:center; justify-content:space-between; gap:6px; padding:12px 20px;
     border-bottom:1px solid var(--border); background:var(--surface-alt);
+    font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-faint);
   }
-  .terminal-bar span{ width:10px; height:10px; border-radius:50%; background:var(--border); }
-  .terminal-body{ padding:26px 24px; font-family:var(--mono); font-size:14px; }
-  .terminal-body .line{ margin-bottom:14px; color:var(--text-muted); }
-  .terminal-body .line:last-child{ margin-bottom:0; }
-  .prompt{ color:var(--signal); }
-  .terminal-body a{ color:var(--text); border-bottom:1px dotted var(--text-faint); }
-  .terminal-body a:hover{ color:var(--signal); border-color:var(--signal); }
+  .report-panel-bar span.mark{ color:var(--signal); }
+  .report-row{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:16px 20px; border-bottom:1px solid var(--border);
+  }
+  .report-row:last-child{ border-bottom:none; }
+  .report-label{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--text-faint);
+  }
+  .report-value{ font-size:14.5px; color:var(--text); }
+  .report-value a{ color:var(--text); border-bottom:1px dotted var(--text-faint); }
+  .report-value a:hover{ color:var(--signal); border-color:var(--signal); }
   .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
   .btn{
     font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em;
     padding:11px 18px; border-radius:var(--radius);
     border:1px solid var(--border);
   }
-  .btn.primary{ background:var(--signal); color:#06201D; border-color:var(--signal); font-weight:600; }
-  .btn.primary:hover{ background:#3fc0b3; }
+  .btn.primary{ background:var(--signal); color:#1A1300; border-color:var(--signal); font-weight:600; }
+  .btn.primary:hover{ background:#d99f22; }
   .btn.secondary{ color:var(--text); }
   .btn.secondary:hover{ border-color:var(--text-faint); }
 
@@ -327,14 +344,14 @@
     <div class="eyebrow">Dublin, Ireland · Available for full-time roles</div>
     <h1>Raj Shinde</h1>
     <p class="role-line">
-      <strong>IT Support Engineer</strong> — Application &amp; Technical Support, Networking, and end-user troubleshooting.
+      <strong>IT &amp; Automation Professional</strong>, applying Excel VBA, Power Automate, and Power BI to financial reporting and data pipelines.
       MSc in Information Systems with Computing, Dublin Business School.
     </p>
     <div class="stat-board">
-      <div class="stat"><span class="stat-num">3–5</span><span class="stat-label">Sites Supported</span></div>
-      <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Devices Deployed</span></div>
-      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Apps Shipped</span></div>
-      <div class="stat"><span class="stat-num">100K+</span><span class="stat-label">App Downloads</span></div>
+      <div class="stat"><span class="stat-num">100K+<span class="trend">▲</span></span><span class="stat-label">App Downloads</span></div>
+      <div class="stat"><span class="stat-num">8<span class="trend">▲</span></span><span class="stat-label">Depts Automated</span></div>
+      <div class="stat"><span class="stat-num">3<span class="trend">▲</span></span><span class="stat-label">BI Reports Built</span></div>
+      <div class="stat"><span class="stat-num">2+<span class="trend">▲</span></span><span class="stat-label">Yrs Client Delivery</span></div>
     </div>
   </div>
 </section>
@@ -343,14 +360,12 @@
   <div class="wrap reveal">
     <div class="section-head"><span class="section-tag">01</span><h2>About</h2></div>
     <p class="section-lede" style="margin-top:0; max-width:680px;">
-      I'm an IT Support Engineer based in Dublin with hands-on experience in technical troubleshooting,
-      end-user support, and application support across enterprise and retail environments. I recently completed
-      an MSc in Information Systems with Computing at Dublin Business School, building on a background in
-      electrical engineering and mobile application development. That combination gives me a practical,
-      systems-level view of IT support — from the hardware and network layer to the application layer, since
-      I've also built and shipped the software that end users depend on. Currently supporting business-critical
-      systems (payment terminals, retail workstations, enterprise networking) as a freelance IT Support Engineer,
-      including Cisco Meraki hardware troubleshooting, device deployment, and cross-team incident resolution.
+      I'm an IT professional based in Dublin with production delivery experience across mobile development, QA,
+      and IT infrastructure support, including Trader Circuit, a financial-markets app now at 100,000+ downloads,
+      and an end-to-end ETL and reporting pipeline (SQL Server, SSIS, SSRS, Tableau) built on a star-schema data
+      model for my MSc project. I'm now extending that data background into Excel VBA, Power Automate, and
+      Power BI through a self-directed Budget vs Actual vs Forecast reporting automation project. Two-plus years
+      of direct client-facing work, from technical support to requirement gathering, backs all of it.
     </p>
   </div>
 </section>
@@ -359,12 +374,13 @@
   <div class="wrap reveal">
     <div class="section-head"><span class="section-tag">02</span><h2>Experience</h2></div>
 
-    <div class="ticket">
+    <div class="ticket current">
       <div class="ticket-head">
-        <span class="ticket-id">#TICKET-003</span>
-        <span class="badge active">Active</span>
-        <span class="ticket-title">Information Technology Support Engineer</span>
-        <span class="ticket-meta">Freelance · Ireland · Jan 2026 – Present</span>
+        <div>
+          <span class="ticket-title">Information Technology Support Engineer</span>
+          <span class="role-org">Freelance · Ireland</span>
+        </div>
+        <span class="period-pill current">Jan 2026 – Present</span>
       </div>
       <div class="ticket-body">
         <ul>
@@ -379,10 +395,11 @@
 
     <div class="ticket">
       <div class="ticket-head">
-        <span class="ticket-id">#TICKET-002</span>
-        <span class="badge closed">Closed</span>
-        <span class="ticket-title">Mobile Application Developer</span>
-        <span class="ticket-meta">WDI — Mobile App Development · Mumbai · Jul 2022 – Dec 2024</span>
+        <div>
+          <span class="ticket-title">Mobile Application Developer</span>
+          <span class="role-org">WDI, Mobile App Development · Mumbai</span>
+        </div>
+        <span class="period-pill">Jul 2022 – Dec 2024</span>
       </div>
       <div class="ticket-body">
         <ul>
@@ -390,17 +407,18 @@
           <li>Integrated REST APIs, Firebase services, and third-party libraries to support real-time data handling and core application functionality.</li>
           <li>Troubleshot application issues, UI inconsistencies, and API integration bugs across live production apps.</li>
           <li>Collaborated directly with clients, designers, and backend teams to scope features, run testing cycles, and ship enhancements.</li>
-          <li>Worked across finance, fitness, and stock-market domains — the same debugging and API-integration skills now carry directly into application support work.</li>
+          <li>Worked across finance, fitness, and stock-market domains, with the same debugging and API-integration skills carrying directly into application support work.</li>
         </ul>
       </div>
     </div>
 
     <div class="ticket">
       <div class="ticket-head">
-        <span class="ticket-id">#TICKET-001</span>
-        <span class="badge closed">Closed</span>
-        <span class="ticket-title">Quality Assurance Intern</span>
-        <span class="ticket-meta">Goldfishh Supplychain Technologies · Mumbai · Jul 2021 – Jan 2022</span>
+        <div>
+          <span class="ticket-title">Quality Assurance Intern</span>
+          <span class="role-org">Goldfishh Supplychain Technologies · Mumbai</span>
+        </div>
+        <span class="period-pill">Jul 2021 – Jan 2022</span>
       </div>
       <div class="ticket-body">
         <ul>
@@ -417,34 +435,34 @@
     <div class="section-head"><span class="section-tag">03</span><h2>Projects</h2></div>
     <div class="project-grid">
 
-      <div class="project">
-        <div class="project-status"><span class="dot"></span> Deployed</div>
-        <h3>Blood Donation Information System</h3>
-        <p>Flutter-based platform connecting donors and receivers in real time, with role-based access for Admins, Donors, and Receivers.</p>
+      <div class="project cat-automation">
+        <div class="project-status"><span class="dot"></span> In Progress</div>
+        <h3>Budget &amp; Forecast Automation Engine</h3>
+        <p>Excel-based Budget vs Actual vs Forecast variance reporting workbook covering 96 monthly records across 8 departments, with VBA automation to clean data, calculate variance, and generate department-level summary reports.</p>
         <div class="tag-row">
-          <span class="tag">Flutter</span><span class="tag">Firebase Auth</span><span class="tag">Firestore</span>
+          <span class="tag">Excel VBA</span><span class="tag">XLOOKUP</span><span class="tag">SUMIFS/COUNTIFS</span><span class="tag">PivotTables</span>
         </div>
-        <div class="metric">Map-based donor matching · request tracking · gamified engagement</div>
+        <div class="metric">96 records · 8 departments · publishing to GitHub</div>
       </div>
 
-      <div class="project">
+      <div class="project cat-data">
         <div class="project-status"><span class="dot"></span> Deployed</div>
-        <h3>Traders Circuit</h3>
-        <p>Stock market and trading app delivering real-time market insights, live pricing, and interactive charts to a large user base.</p>
+        <h3>Data Analytics &amp; Visualisation Pipeline</h3>
+        <p>Star-schema data warehouse with fact and dimension tables, built with SSIS ETL packages, plus SSRS reports and a Tableau dashboard to visualise the resulting dataset. Built for an MSc Data Analytics module.</p>
+        <div class="tag-row">
+          <span class="tag">SQL Server</span><span class="tag">SSIS</span><span class="tag">SSRS</span><span class="tag">Tableau</span>
+        </div>
+        <div class="metric">Star-schema model · 3 SSRS reports</div>
+      </div>
+
+      <div class="project cat-mobile">
+        <div class="project-status"><span class="dot"></span> Deployed</div>
+        <h3>Trader Circuit</h3>
+        <p>Flutter-based financial markets application delivering real-time stock prices and interactive market charts, with tiered access across intraday, long-term, and swing-trading features.</p>
         <div class="tag-row">
           <span class="tag">Flutter</span><span class="tag">Financial APIs</span><span class="tag">UI/UX</span>
         </div>
         <div class="metric">100K+ downloads on Google Play</div>
-      </div>
-
-      <div class="project">
-        <div class="project-status"><span class="dot"></span> Deployed</div>
-        <h3>GetSetFit</h3>
-        <p>Fitness tracking app with Bluetooth integration to smart weighing devices, capturing weight, body fat %, and BMR metrics.</p>
-        <div class="tag-row">
-          <span class="tag">Flutter</span><span class="tag">Bluetooth</span><span class="tag">REST APIs</span>
-        </div>
-        <div class="metric">Step tracking · personalized diet plans · live sessions</div>
       </div>
 
     </div>
@@ -456,28 +474,36 @@
     <div class="section-head"><span class="section-tag">04</span><h2>Skills</h2></div>
 
     <div class="skill-group">
-      <div class="skill-group-label">Support &amp; Operations</div>
+      <div class="skill-group-label">Reporting &amp; Automation</div>
       <div class="chip-row">
-        <span class="chip"><span class="dot"></span>Technical Support</span>
-        <span class="chip"><span class="dot"></span>Application Support</span>
-        <span class="chip"><span class="dot"></span>Help Desk Support</span>
-        <span class="chip"><span class="dot"></span>Troubleshooting</span>
-        <span class="chip"><span class="dot"></span>Incident Management</span>
-        <span class="chip"><span class="dot"></span>Field Support</span>
-        <span class="chip"><span class="dot"></span>Networking Fundamentals</span>
-        <span class="chip"><span class="dot"></span>Microsoft 365</span>
-        <span class="chip"><span class="dot"></span>Windows Environments</span>
+        <span class="chip"><span class="dot"></span>Advanced Excel</span>
+        <span class="chip"><span class="dot"></span>Excel VBA</span>
+        <span class="chip"><span class="dot"></span>Power Automate</span>
+        <span class="chip"><span class="dot"></span>AI Tools (Claude)</span>
       </div>
     </div>
 
     <div class="skill-group">
-      <div class="skill-group-label">Development &amp; Data</div>
+      <div class="skill-group-label">Data &amp; BI Foundations</div>
       <div class="chip-row">
-        <span class="chip"><span class="dot"></span>Flutter</span>
-        <span class="chip"><span class="dot"></span>Firebase</span>
-        <span class="chip"><span class="dot"></span>REST APIs</span>
-        <span class="chip"><span class="dot"></span>SQL</span>
-        <span class="chip"><span class="dot"></span>Cisco Meraki</span>
+        <span class="chip"><span class="dot"></span>SQL Server</span>
+        <span class="chip"><span class="dot"></span>SSIS</span>
+        <span class="chip"><span class="dot"></span>SSRS</span>
+        <span class="chip"><span class="dot"></span>Tableau</span>
+        <span class="chip"><span class="dot"></span>Star-Schema Modelling</span>
+        <span class="chip"><span class="dot"></span>Power BI (Power Query, DAX)</span>
+        <span class="chip"><span class="dot"></span>Python (pandas)</span>
+        <span class="chip"><span class="dot"></span>SQL Query Writing</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-label">Support &amp; Operations</div>
+      <div class="chip-row">
+        <span class="chip"><span class="dot"></span>Technical Support</span>
+        <span class="chip"><span class="dot"></span>Incident Management</span>
+        <span class="chip"><span class="dot"></span>Networking Fundamentals</span>
+        <span class="chip"><span class="dot"></span>Windows Environments</span>
       </div>
     </div>
   </div>
@@ -509,15 +535,23 @@
   <div class="wrap reveal">
     <div class="section-head"><span class="section-tag">06</span><h2>Contact</h2></div>
 
-    <div class="terminal">
-      <div class="terminal-bar"><span></span><span></span><span></span></div>
-      <div class="terminal-body">
-        <div class="line"><span class="prompt">$</span> whoami</div>
-        <div class="line">Raj Shinde — IT Support Engineer, Dublin, Ireland</div>
-        <div class="line"><span class="prompt">$</span> contact --email</div>
-        <div class="line"><a href="mailto:rajshinde046@gmail.com">rajshinde046@gmail.com</a></div>
-        <div class="line"><span class="prompt">$</span> contact --linkedin</div>
-        <div class="line"><a href="https://www.linkedin.com/in/rajshinde2000" target="_blank" rel="noopener">linkedin.com/in/rajshinde2000</a></div>
+    <div class="report-panel">
+      <div class="report-panel-bar"><span>Contact Summary</span><span class="mark">FY26</span></div>
+      <div class="report-row">
+        <span class="report-label">Name</span>
+        <span class="report-value">Raj Shinde, IT &amp; Automation Professional</span>
+      </div>
+      <div class="report-row">
+        <span class="report-label">Location</span>
+        <span class="report-value">Dublin, Ireland</span>
+      </div>
+      <div class="report-row">
+        <span class="report-label">Email</span>
+        <span class="report-value"><a href="mailto:rajshinde046@gmail.com">rajshinde046@gmail.com</a></span>
+      </div>
+      <div class="report-row">
+        <span class="report-label">LinkedIn</span>
+        <span class="report-value"><a href="https://www.linkedin.com/in/rajshinde2000" target="_blank" rel="noopener">linkedin.com/in/rajshinde2000</a></span>
       </div>
     </div>
 
